@@ -1,0 +1,4 @@
+django==5.0.1
+requests==2.31.0
+nba_api==1.4.1
+pandas==2.2.0
