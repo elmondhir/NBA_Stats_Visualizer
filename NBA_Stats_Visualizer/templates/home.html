@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Stats Visualizer</title>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+    <!-- <style rel="stylesheet" href="{% static 'styles/index.css' %}"></style> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+      #loading-screen {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(255, 255, 255, 0.8);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 9999;
+      }
+
+      #loading-message {
+          font-size: 20px;
+      }
+    </style>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+
+<body class="bg-light">
+  <div id="loading-screen">
+    <p id="loading-message">Please wait for data retrieval...</p>
+</div>
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1 class="text-primary">Welcome to NBA Stats Visualizer</h1>
+        </div>
+
+        <div class="row justify-content-center">
+            <form action="{% url 'home' %}" method="POST" class="form-inline" id="myForm">
+                {% csrf_token %}
+                
+                <div class="form-group mx-2">
+                    <label for="statType">Choose Stat Type:</label>
+                    <select class="form-control" id="statType" name="statType">
+                        <option value="off_def">Off/Def</option>
+                        <option value="tpa_tpm">TPA/TPM</option>
+                    </select>
+                </div>
+
+                <div class="form-group mx-2">
+                    <label for="shortText">Short Text:</label>
+                    <input type="text" class="form-control" id="shortText" name="shortText">
+                </div>
+
+                <button type="submit" class="btn btn-primary mx-2">Submit</button>
+            </form>
+        </div>
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8">
+                <!-- Ensure the SVG has appropriate width and height -->
+                <svg id="areaData1" width="700px" height="500px" class="border">
+                  <image href="{% static 'img/nba_logo.png' %}" width="630px" height="420px" id="logoImage"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-3">
+            <button class="btn btn-secondary" onclick="performTransition()">Perform Transition</button>
+        </div>
+    </div>
+
+    <script>
+      function showLoadingScreen() {
+        // Show loading screen
+        var loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'flex';
+        }
+    }
+
+    // Attach the showLoadingScreen function to the form submission
+    document.getElementById('myForm').addEventListener('submit', function() {
+        showLoadingScreen();
+    });
+</script>
+
+    <script>
+      window.onload = function() {
+          // Hide the loading screen once the page is fully loaded
+          var loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+              loadingScreen.style.display = 'none';
+          }
+      };
+  </script>    
+</body>
+
+
+{{ game_stats |json_script:"mygamestats" }}
+
+<script>
+    
+  const width = 700;
+  const height = 500;
+
+  const marginRight = 20;
+  const marginLeft = 40;
+  const marginTop = 20;
+  const marginBottom = 30;
+
+  // Now you can use the gameStats variable in your JavaScript functions
+
+  var gamestats = JSON.parse(document.getElementById('mygamestats').textContent);
+  
+  console.log("Done");
+  console.dir(gamestats);
+  console.log("Done");
+  
+  // Sample data for two sets of points
+  // var data1 = generateData();
+  var data1 = gamestats["1610612752"];
+  var data2 = gamestats["1610612752"];
+  // var data2 = generateData();
+  
+  console.log(data2);
+  console.log(data2.length);
+
+  var logoImage = document.getElementById('logoImage');
+        if (logoImage) {
+            logoImage.remove();
+        }
+
+  // Get the existing SVG element
+  var svg = d3.select("#areaData1");
+
+  // Define the scales for X and Y axes
+  // Define the scales for X and Y axes
+  var xScale = d3.scaleLinear()
+    // .domain([d3.min(data1.concat(data2), d => d.Average_OFF_RATING), d3.max(data1.concat(data2), d => d.Average_OFF_RATING)])
+    .domain([80, 130])
+    .range([marginLeft, width - marginRight]); // Adjust based on your SVG width
+
+  var yScale = d3.scaleLinear()
+    // .domain([d3.min(data1.concat(data2), d => d.Average_DEF_RATING), d3.max(data1.concat(data2), d => d.Average_DEF_RATING)])
+    .domain([80, 130])
+    .range([480, 20]); // Adjust based on your SVG height
+
+  // Create X axis
+
+  var x_min = d3.min(data1.concat(data2), d => d.Average_OFF_RATING)
+  // var y_min
+  var x_diff = d3.max(data1.concat(data2), d => d.Average_OFF_RATING) - d3.min(data1.concat(data2), d => d.Average_OFF_RATING)
+  var y_diff = d3.max(data1.concat(data2), d => d.Average_DEF_RATING) - d3.min(data1.concat(data2), d => d.Average_DEF_RATING)
+
+  var x_diff_by_5= Math.floor(x_diff/5)
+  var y_diff_by_5= Math.floor(y_diff/5)
+  
+  
+  svg.append("g")
+    .attr("transform", "translate(0, 250)") // Adjust based on your SVG height
+    // .call(d3.axisBottom(xScale));
+    .call(d3.axisBottom(xScale)
+      // .ticks(5)  // Adjust the number of ticks as needed
+      // .tickValues([80, 90, 100, 110, 120])  // Custom tick values
+  );
+
+  // Create Y axis
+  svg.append("g")
+    // .attr("transform", "translate(40, 0)")  // Move the y-axis slightly to the right
+    .attr("transform", "translate(350, 0)")  // Move the y-axis slightly to the right
+    .call(d3.axisLeft(yScale));
+
+  // Create initial scatter plot with two points
+  var initialData = [data1[0], data2[0]];
+
+  var circles = svg.selectAll("circle")
+    .data(initialData)
+    .enter().append("circle")
+    .attr("cx", d => xScale(d.Average_OFF_RATING))
+    .attr("cy", d => yScale(d.Average_DEF_RATING))
+    .attr("r", 2)
+    .attr("fill", (d, i) => i === 0 ? "blue" : "green"); // Different colors for the two points
+
+  var logos = svg.selectAll("image")
+    .data(initialData)
+    .enter().append("image")
+    .attr("xlink:href", (d, i) => i === 0 ? "{% static 'img/grizllies.png' %}"  : "{% static 'img/raptors.png' %}") // Path to your logos
+    .attr("x", d => xScale(d.Average_OFF_RATING) - 10) // Adjust based on the size of your logos
+    .attr("y", d => yScale(d.Average_DEF_RATING) - 10) // Adjust based on the size of your logos
+    .attr("width", 40) // Adjust based on the size of your logos
+    .attr("height", 40); // Adjust based on the size of your logos
+
+  var currentIndex = 0; // Variable to keep track of the current index
+
+  // Function to perform the transition
+  function performTransition() {
+    currentIndex = (currentIndex + 1) % data2.length; // Cycle through indices (assuming 10 elements in each array)
+    
+    circles.data([data1[currentIndex], data2[currentIndex]]) // Update data to the next set of points
+      .transition()
+      .duration(2000) // Set the duration of the transition
+      .attr("cx", d => xScale(d.Average_OFF_RATING)) // Update X position
+      .attr("cy", d => yScale(d.Average_DEF_RATING)) // Update Y position
+      .attr("fill", "red"); // Change color if needed
+
+    logos.data([data1[currentIndex], data2[currentIndex]]) // Update data to the next set of points for logos
+      .transition()
+      .duration(2000) // Set the duration of the transition
+      .attr("x", d => xScale(d.Average_OFF_RATING) - 10) // Update X position for logos
+      .attr("y", d => yScale(d.Average_DEF_RATING) - 10); // Update Y position for logos
+  }
+
+  // Function to generate random data
+  function generateData() {
+    var data = [];
+    for (var i = 0; i < 10; i++) {
+      data.push({
+        x: Math.random() * 100, // Adjust the range based on your data
+        y: Math.random() * 50   // Adjust the range based on your data
+      });
+    }
+    return data;
+  }
+  </script>  
+
+</html>
