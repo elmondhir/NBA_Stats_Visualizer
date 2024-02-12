@@ -16,6 +16,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
 
     <style>
+      body {
+            background: url('{% static "img/background.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            /* Adjust other styles as needed */
+        }
       #loading-screen {
           position: fixed;
           top: 0;
@@ -103,14 +108,16 @@
         <div class="row justify-content-center mt-4">
             <div class="col-md-8">
                 <!-- Ensure the SVG has appropriate width and height -->
-                <svg id="areaData1" width="700px" height="600px" class="border">
+                <svg id="areaData1" width="700px" height="600px"  style="border: 1px solid #000;">
                   <image href="{% static 'img/nba_logo.png' %}" width="630px" height="420px" id="logoImage"/>
                 </svg>
             </div>
         </div>
 
         <div class="row justify-content-center mt-3">
-            <button class="btn btn-secondary" onclick="performTransition()">Perform Transition</button>
+          <div class="col-4"> <!-- Adjust the column width as needed -->
+            <button class="btn btn-secondary btn-sm btn-block" onclick="performTransition()">Perform Transition</button>
+            </div>
         </div>
     </div>
 
@@ -175,10 +182,6 @@
     .domain([80, 130])
     .range([580, 20]); // Adjust based on your SVG height
   
-  // axis(d3.scaleLinear())
-  // .ticks(2)
-  // .render()
-  // // create X axis
   svg.append("g")
     .attr("transform", "translate(0, 300)") // Adjust based on your SVG height
     .call(d3.axisBottom(xScale).ticks(0) //.ticks(0) remove labels and ticks
@@ -221,17 +224,17 @@
     .enter().append("circle")
     .attr("cx", d => xScale(d.Average_OFF_RATING))
     .attr("cy", d => yScale(d.Average_DEF_RATING))
-    .attr("r", 2)
+    .attr("r", 0)
 
   var logos = svg.selectAll("image")
     .data(initialData, d => d ? d.team_abv : null)  // this ensure the first logo is loaded and the images are moving
     .enter().append("image")
     .attr("xlink:href", d => `{% static 'img/logos/' %}${d.team_abv}.png`)
     
-    .attr("x", d => xScale(d.Average_OFF_RATING) - 10) // Adjust based on the size of your logos
-    .attr("y", d => yScale(d.Average_DEF_RATING) - 10) // Adjust based on the size of your logos
-    .attr("width", 40) // Adjust based on the size of your logos
-    .attr("height", 40); // Adjust based on the size of your logos
+    .attr("x", d => xScale(d.Average_OFF_RATING) - 10) 
+    .attr("y", d => yScale(d.Average_DEF_RATING) - 10) 
+    .attr("width", 40) // size of logos
+    .attr("height", 40); //size of  logos
     
     // Problem: logo is removed on load, not after submit
     var logoImage = document.getElementById('logoImage');
@@ -248,7 +251,7 @@
     return gamestats[a].length < gamestats[b].length ? a : b;
     });
     
-    currentIndex = (currentIndex + 1) % gamestats[shortestTeam].length; // used tobe data2.len //Cycle through indices (assuming 10 elements in each array)
+    currentIndex = (currentIndex + 1) % gamestats[shortestTeam].length; 
     
     var teamDataArray = Object.values(gamestats);
     var currentTeamData = teamDataArray.map(team => team[currentIndex]).filter(observation => observation);
@@ -258,7 +261,7 @@
       .duration(2000) // Set the duration of the transition
       .attr("cx", d => xScale(d.Average_OFF_RATING)) // Update X position
       .attr("cy", d => yScale(d.Average_DEF_RATING)) // Update Y position
-      .attr("fill", "red"); // Change color if needed
+      // .attr("fill", "red"); // Change color if needed
 
     logos.data(currentTeamData) // Update data to the next set of points for logos
       .transition()
