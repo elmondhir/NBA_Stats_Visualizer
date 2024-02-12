@@ -103,7 +103,7 @@
         <div class="row justify-content-center mt-4">
             <div class="col-md-8">
                 <!-- Ensure the SVG has appropriate width and height -->
-                <svg id="areaData1" width="700px" height="500px" class="border">
+                <svg id="areaData1" width="700px" height="600px" class="border">
                   <image href="{% static 'img/nba_logo.png' %}" width="630px" height="420px" id="logoImage"/>
                 </svg>
             </div>
@@ -149,7 +149,7 @@
   const height = 600;
 
   const marginRight = 20;
-  const marginLeft = 40;
+  const marginLeft = 20;
   const marginTop = 20;
   const marginBottom = 30;
 
@@ -174,18 +174,47 @@
   var yScale = d3.scaleLinear()
     .domain([80, 130])
     .range([580, 20]); // Adjust based on your SVG height
-
   
+  // axis(d3.scaleLinear())
+  // .ticks(2)
+  // .render()
+  // // create X axis
   svg.append("g")
-    .attr("transform", "translate(0, 250)") // Adjust based on your SVG height
-    .call(d3.axisBottom(xScale)
+    .attr("transform", "translate(0, 300)") // Adjust based on your SVG height
+    .call(d3.axisBottom(xScale).ticks(0) //.ticks(0) remove labels and ticks
   );
 
+  
+  // Add right side X axis label:
+  svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", (height/2)-10)
+    .text("Good Defense");
+  // add left side X axis label
+  svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("x", 100)
+    .attr("y", (height/2)-10)
+    .text("Bad Defense");
+      
   // Create Y axis
   svg.append("g")
     .attr("transform", "translate(350, 0)")  // Move the y-axis slightly to the right
-    .call(d3.axisLeft(yScale));
+    .call(d3.axisLeft(yScale).ticks(0));
 
+  // Add Upper side Y axis label:
+  svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("y", 20)
+    .attr("x", (width+marginLeft+marginRight+50)/2)
+    .text("Good Offence")
+  // Add Lower side Y axis label:
+    svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("y", height-10)
+    .attr("x", (width+marginLeft+marginRight+50)/2)
+    .text("Bad Offense")
 
   var circles = svg.selectAll("circle")
     .data(initialData)
