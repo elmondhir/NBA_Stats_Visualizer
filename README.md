@@ -44,6 +44,10 @@ Follow these steps to get started with NBA Stats Visualizer:
 
 ## Screenshots
 
+### Please wait for data retrieval 
+<img src="screenshots/login.png" alt="Login Screenshot" width="600"/>
+
+
 ## Running with Docker
 
 To run NBA Stats Visualizer using Docker, make sure Docker is installed on your machine. If not, you can download and install Docker from the [official Docker website](https://www.docker.com/get-started).
