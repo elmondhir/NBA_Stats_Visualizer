@@ -45,8 +45,10 @@ Follow these steps to get started with NBA Stats Visualizer:
 ## Screenshots
 
 ### Please wait for data retrieval 
-<img src="screenshots/login.png" alt="Login Screenshot" width="600"/>
+<img src="screenshots/please_wait.png" alt="Login Screenshot" width="600"/>
 
+### View teams stats
+<img src="screenshots/teams.png" alt="Teams Screenshot" width="600"/>
 
 ## Running with Docker
 
