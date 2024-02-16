@@ -68,6 +68,19 @@ Follow these steps:
 
 3. Open your browser and go to [http://localhost:8000](http://localhost:8000) to access the NBA Stats Visualizer interface.
 
+## Or 
+
+1. Pull the image from Dockerhub:
+    ```bash
+    docker pull mondhirch2/django-nba-docker:0.0.1
+    ```
+
+2. Run the app:
+    ```bash
+    docker run --name django-container -p 8000:8000 -d mondhirch2/django-nba-docker:0.0.1
+    ```
+3. Open your browser and go to [http://localhost:8000](http://localhost:8000)
+
 ## Contributing
 
 We welcome contributions! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
