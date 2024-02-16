@@ -66,11 +66,11 @@ Follow these steps:
     docker-compose up
     ```
 
-3. Open your browser and go to [http://localhost:5000](http://localhost:5000) to access the NBA Stats Visualizer interface.
+3. Open your browser and go to [http://localhost:8000](http://localhost:8000) to access the NBA Stats Visualizer interface.
 
 ## Contributing
 
-We welcome contributions! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request. Follow our [contribution guidelines](CONTRIBUTING.md).
+We welcome contributions! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
 
 ### Disclaimer
