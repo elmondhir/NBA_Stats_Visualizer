@@ -232,13 +232,13 @@
     .attr("text-anchor", "end")
     .attr("x", width)
     .attr("y", (height/2)-10)
-    .text("Good Defense");
+    .text("Good Offence");
   // add left side X axis label
   svg.append("text")
     .attr("text-anchor", "end")
     .attr("x", 100)
     .attr("y", (height/2)-10)
-    .text("Bad Defense");
+    .text("Bad Offence");
       
   // Create Y axis
   svg.append("g")
@@ -250,13 +250,13 @@
     .attr("text-anchor", "end")
     .attr("y", 20)
     .attr("x", (width+marginLeft+marginRight+50)/2)
-    .text("Good Offence")
+    .text("Good Defense")
   // Add Lower side Y axis label:
     svg.append("text")
     .attr("text-anchor", "end")
     .attr("y", height-10)
     .attr("x", (width+marginLeft+marginRight+50)/2)
-    .text("Bad Offense")
+    .text("Bad Defense")
 
   var circles = svg.selectAll("circle")
     .data(initialData)
