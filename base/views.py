@@ -45,8 +45,9 @@ def home(request):
                         cumulative_off_rating += OFF_RATING
                         cumulative_def_rating += DEF_RATING
                         
-                        average_off_rating = (cumulative_off_rating / (len(game_stats)+1)) if len(game_stats) > 0 else OFF_RATING
-                        average_def_rating = (cumulative_def_rating / (len(game_stats)+1)) if len(game_stats) > 0 else DEF_RATING
+                        average_off_rating = "{:.1f}".format(cumulative_off_rating / (len(game_stats) + 1)) if len(game_stats) > 0 else "{:.1f}".format(OFF_RATING)
+                        average_def_rating = "{:.1f}".format(cumulative_def_rating / (len(game_stats) + 1)) if len(game_stats) > 0 else "{:.1f}".format(DEF_RATING)
+
 
                         
                         game_stats.append(
