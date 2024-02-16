@@ -114,11 +114,44 @@
             </div>
         </div>
 
+        <!-- Table to display game statistics -->
+        <div class="row justify-content-center mt-4">
+          <div class="col-md-8">
+              <table class="table table-bordered">
+                  <thead>
+                      <tr>
+                          <th>Team Abbreviation</th>
+                          <th>Game ID</th>
+                          <th>OFF Rating</th>
+                          <th>DEF Rating</th>
+                          <th>Average OFF Rating</th>
+                          <th>Average DEF Rating</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for team_id, game_stats in game_stats.items %}
+                          {% for stat in game_stats %}
+                              <tr>
+                                  <td>{{ stat.team_abv }}</td>
+                                  <td>{{ stat.Game_id }}</td>
+                                  <td>{{ stat.OFF_RATING }}</td>
+                                  <td>{{ stat.DEF_RATING }}</td>
+                                  <td>{{ stat.Average_OFF_RATING }}</td>
+                                  <td>{{ stat.Average_DEF_RATING }}</td>
+                              </tr>
+                          {% endfor %}
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+        </div>
+
         <div class="row justify-content-center mt-3">
           <div class="col-4"> <!-- Adjust the column width as needed -->
             <button class="btn btn-secondary btn-sm btn-block" onclick="performTransition()">Perform Transition</button>
             </div>
         </div>
+
     </div>
 
     <script>
