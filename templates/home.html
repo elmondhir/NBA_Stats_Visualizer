@@ -281,6 +281,16 @@
             logoImage.remove();
     }  
 
+  var grayscaleLogos = svg.selectAll(".grayscale-logo")
+    .data(initialData)
+    .enter().append("image")
+    .attr("xlink:href", d => `{% static 'img/logos_grayscale/' %}${d.team_abv}.png`)
+    .attr("x", d => xScale(d.Average_OFF_RATING) - 10)
+    .attr("y", d => yScale(d.Average_DEF_RATING) - 10)
+    .attr("width", 40)
+    .attr("height", 40)
+    .style("opacity", 0.0); // Initial opacity set to fully visible
+
   var currentIndex = 0; // Variable to keep track of the current index
 
   // Function to perform the transition
@@ -302,6 +312,10 @@
       .attr("cy", d => yScale(d.Average_DEF_RATING)) // Update Y position
       // .attr("fill", "red"); // Change color if needed
 
+        // Fade out grayscale logos
+    grayscaleLogos.transition()
+      .style("opacity", 0.7);
+      
     logos.data(currentTeamData) // Update data to the next set of points for logos
       .transition()
       .duration(2000) // Set the duration of the transition
